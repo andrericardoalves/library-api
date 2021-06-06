@@ -3,6 +3,7 @@ package com.alves.libraryApi.repository;
 import com.alves.libraryApi.model.Book;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
@@ -45,6 +47,42 @@ public class BookRepositoryTest {
         MatcherAssert.assertThat(exists, Matchers.is(false));
     }
 
+    @Test
+    @Transactional()
+    public void shouldFoundBookById(){
+        Book book = createNewBook("123");
+        testEntityManager.persist(book);
+
+        Optional<Book> foundBook = repository.findById(1L);
+
+        MatcherAssert.assertThat(foundBook.isPresent(), Matchers.is(true));
+    }
+
+    @Test
+    @Transactional
+    public void shouldBeSaveBook(){
+        Book book = createNewBook("123");
+
+        Book savedBook = repository.save(book);
+
+        MatcherAssert.assertThat(savedBook.getId(), Matchers.notNullValue());
+
+    }
+
+    @Test
+    @Transactional
+    public void shouldDeleteBook(){
+        Book book = createNewBook("123");
+        testEntityManager.persist(book);
+
+        Book bookFound = testEntityManager.find(Book.class, book.getId());
+
+        repository.delete(bookFound);
+
+        Book deleteBook = testEntityManager.find(Book.class, book.getId());
+
+        MatcherAssert.assertThat(deleteBook, Matchers.nullValue());
+    }
 
     public static Book createNewBook(String isbn) {
         return Book.builder().author("Andre").title("Programming for All").isbn(isbn).build();
