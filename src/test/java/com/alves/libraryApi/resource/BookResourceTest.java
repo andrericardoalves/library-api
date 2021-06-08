@@ -31,7 +31,7 @@ import java.util.Optional;
 
 @ExtendWith({SpringExtension.class})
 @ActiveProfiles("test")
-@WebMvcTest(controllers = BookResourceTest.class)
+@WebMvcTest(controllers = BookResource.class)
 @AutoConfigureMockMvc
 public class BookResourceTest {
 
@@ -200,7 +200,7 @@ public class BookResourceTest {
     }
 
     @Test
-    public void shouldBeReturnListOfBooks() throws Exception {
+    public void shouldReturnListOfBooks() throws Exception {
         Book book = createNewBookWithId();
 
         BDDMockito.given( service.find(Mockito.any(Book.class), Mockito.any(Pageable.class)))

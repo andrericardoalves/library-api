@@ -151,7 +151,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void shouldBeFoundBooks(){
+    public void shouldFoundBooks(){
         Book book = createNewBook();
 
         PageRequest pageRequest = PageRequest.of(0,100);
