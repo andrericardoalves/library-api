@@ -31,11 +31,12 @@ import java.util.Optional;
 
 @ExtendWith({SpringExtension.class})
 @ActiveProfiles("test")
-@WebMvcTest
+@WebMvcTest(controllers = BookResourceTest.class)
 @AutoConfigureMockMvc
 public class BookResourceTest {
 
     static  String BOOK_API = "/api/books";
+
     @Autowired
     MockMvc mvc;
 

@@ -54,4 +54,8 @@ public class BookService {
 
         return repository.findAll(example, pageable);
     }
+
+    public Optional<Book> getBookByIsbn(String isbn) {
+        return null;
+    }
 }
