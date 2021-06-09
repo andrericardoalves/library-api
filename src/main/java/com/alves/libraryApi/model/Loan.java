@@ -6,25 +6,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
+import java.time.LocalDate;
+import java.util.List;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
-@Table
-public class Book {
+public class Loan {
 
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
-    private String title;
+    private LocalDate loanDate;
     @Column
-    private String author;
-    @Column
-    private String isbn;
-    @ManyToOne
-    private Loan loan;
+    private Boolean returned;
+    @OneToOne
+    private Customer customer;
+    @OneToMany(mappedBy = "loan")
+    private List<Book> listBook;
 }
+
