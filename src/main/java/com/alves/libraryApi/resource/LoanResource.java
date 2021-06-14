@@ -43,7 +43,7 @@ public class LoanResource {
                 }).collect(Collectors.toList());
 
         Loan entity = Loan.builder()
-            .listBook(books)
+            .books(books)
             .customer(Customer.builder().id(dto.getIdCustomer()).build())
             .loanDate(LocalDate.now())
             .build();

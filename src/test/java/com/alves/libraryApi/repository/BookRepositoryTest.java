@@ -1,9 +1,9 @@
 package com.alves.libraryApi.repository;
 
+import com.alves.libraryApi.data.BookData;
 import com.alves.libraryApi.model.Book;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class BookRepositoryTest {
     @Transactional
     public void returnTrueWhenIsbnExists(){
         String isbn = "0001";
-        Book book = createNewBook(isbn);
+        Book book = BookData.createNewBook(isbn);
         testEntityManager.persist(book);
         boolean exists = repository.existsByIsbn(isbn);
         MatcherAssert.assertThat(exists, Matchers.is(true));
@@ -50,10 +50,10 @@ public class BookRepositoryTest {
     @Test
     @Transactional()
     public void shouldFoundBookById(){
-        Book book = createNewBook("123");
+        Book book = BookData.createNewBook();
         testEntityManager.persist(book);
 
-        Optional<Book> foundBook = repository.findById(1L);
+        Optional<Book> foundBook = repository.findById(book.getId());
 
         MatcherAssert.assertThat(foundBook.isPresent(), Matchers.is(true));
     }
@@ -61,7 +61,7 @@ public class BookRepositoryTest {
     @Test
     @Transactional
     public void shouldBeSaveBook(){
-        Book book = createNewBook("123");
+        Book book = BookData.createNewBook("123");
 
         Book savedBook = repository.save(book);
 
@@ -72,7 +72,7 @@ public class BookRepositoryTest {
     @Test
     @Transactional
     public void shouldDeleteBook(){
-        Book book = createNewBook("123");
+        Book book = BookData.createNewBook("123");
         testEntityManager.persist(book);
 
         Book bookFound = testEntityManager.find(Book.class, book.getId());
@@ -84,8 +84,6 @@ public class BookRepositoryTest {
         MatcherAssert.assertThat(deleteBook, Matchers.nullValue());
     }
 
-    public static Book createNewBook(String isbn) {
-        return Book.builder().author("Andre").title("Programming for All").isbn(isbn).build();
-    }
+
 
 }

@@ -65,7 +65,7 @@ public class LoanResourceTest {
 
         Loan loan = Loan.builder().id(1L)
                 .customer(customer)
-                .listBook(Arrays.asList(book))
+                .books(Arrays.asList(book))
                 .loanDate(LocalDate.now()).build();
 
         BDDMockito.given( loanService.save(Mockito.any(Loan.class))).willReturn(loan);
@@ -99,7 +99,7 @@ public class LoanResourceTest {
 
         Loan loan = Loan.builder().id(1L)
                 .customer(customer)
-                .listBook(Arrays.asList(bookOne, bookTwo))
+                .books(Arrays.asList(bookOne, bookTwo))
                 .loanDate(LocalDate.now()).build();
 
         BDDMockito.given( loanService.save(Mockito.any(Loan.class))).willReturn(loan);

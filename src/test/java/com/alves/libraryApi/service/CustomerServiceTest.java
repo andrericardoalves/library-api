@@ -1,5 +1,6 @@
 package com.alves.libraryApi.service;
 
+import com.alves.libraryApi.data.CustomerData;
 import com.alves.libraryApi.model.Customer;
 import com.alves.libraryApi.repository.CustomerRepository;
 import org.hamcrest.MatcherAssert;
@@ -37,7 +38,7 @@ public class CustomerServiceTest {
     @Test
     public void shouldBeFoundBook(){
         Long id = 1L;
-        Customer customer = createCustomer();
+        Customer customer = CustomerData.createCustomerWithId();
         Mockito.when( service.findById(id)).thenReturn(Optional.of(customer));
 
         Optional<Customer> customerFound = service.findById(id);
@@ -62,7 +63,7 @@ public class CustomerServiceTest {
 
     @Test
     public void shouldFoundCustomers(){
-        Customer customer = createCustomer();
+        Customer customer = CustomerData.createCustomer();
 
         PageRequest pageRequest = PageRequest.of(0,100);
 
@@ -80,8 +81,4 @@ public class CustomerServiceTest {
         MatcherAssert.assertThat(result.getPageable().getPageSize(), Matchers.equalTo(100));
     }
 
-
-    private Customer createCustomer(){
-        return Customer.builder().id(1L).name("Andre").email("andre@email.com").build();
-    }
 }

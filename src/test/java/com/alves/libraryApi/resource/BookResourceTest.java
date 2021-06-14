@@ -1,5 +1,6 @@
 package com.alves.libraryApi.resource;
 
+import com.alves.libraryApi.data.BookData;
 import com.alves.libraryApi.dto.BookDTO;
 import com.alves.libraryApi.exception.BusinessException;
 import com.alves.libraryApi.model.Book;
@@ -9,7 +10,6 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -46,7 +46,7 @@ public class BookResourceTest {
     @Test
     public void shouldBeCreateBook() throws Exception {
 
-        BookDTO dto = createNewBookDTO();
+        BookDTO dto = BookData.createNewBookDTO();
         Book bookSaved = Book.builder().id(1L).author("Andre").title("Programming for All").isbn("0001").build();
 
         String json = new ObjectMapper().writeValueAsString(dto);
@@ -83,7 +83,7 @@ public class BookResourceTest {
 
     @Test
     public void shouldReturnErrorDuplicatedIsbn() throws Exception {
-        BookDTO dto = createNewBookDTO();
+        BookDTO dto = BookData.createNewBookDTO();
         String json = new ObjectMapper().writeValueAsString(dto);
         String message = "Isbn already exist";
         BDDMockito.given(service.save(Mockito.any(Book.class))).willThrow(new BusinessException(message));
@@ -102,7 +102,7 @@ public class BookResourceTest {
     @Test
     public void searchBookDetails() throws Exception {
         Long id = 1L;
-        Book book = createNewBook();
+        Book book = BookData.createNewBook();
         book.setId(id);
 
         BDDMockito.given(service.getById(id)).willReturn(Optional.of(book));
@@ -183,7 +183,7 @@ public class BookResourceTest {
 
     @Test
     public void shouldUpdateBookNotFound() throws Exception {
-        BookDTO dto = createNewBookDTO();
+        BookDTO dto = BookData.createNewBookDTO();
         String json = new ObjectMapper().writeValueAsString(dto);
 
         BDDMockito.given( service.getById(Mockito.anyLong())).willReturn(Optional.empty());
@@ -201,7 +201,7 @@ public class BookResourceTest {
 
     @Test
     public void shouldReturnListOfBooks() throws Exception {
-        Book book = createNewBookWithId();
+        Book book = BookData.createNewBookWithId();
 
         BDDMockito.given( service.find(Mockito.any(Book.class), Mockito.any(Pageable.class)))
                 .willReturn(new PageImpl<Book>(Arrays.asList(book), PageRequest.of(0, 100), 1));
@@ -221,18 +221,4 @@ public class BookResourceTest {
            .andExpect( MockMvcResultMatchers.jsonPath("pageable.pageNumber").value(0));
     }
 
-    private Book createNewBookWithId() {
-        return Book.builder()
-                .id(1L).author("Andre").title("Programming for All").isbn("0001").build();
-    }
-
-    private Book createNewBook() {
-        return Book.builder()
-                .author("Andre").title("Programming for All").isbn("0001").build();
-    }
-
-    private BookDTO createNewBookDTO() {
-        return BookDTO.builder()
-                .author("Andre").title("Programming for All").isbn("0001").build();
-    }
 }

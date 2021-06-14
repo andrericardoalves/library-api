@@ -1,6 +1,6 @@
 package com.alves.libraryApi.resource;
 
-import com.alves.libraryApi.dto.CustomerDTO;
+import com.alves.libraryApi.data.CustomerData;
 import com.alves.libraryApi.model.Customer;
 import com.alves.libraryApi.service.CustomerService;
 import org.hamcrest.Matchers;
@@ -43,7 +43,7 @@ public class CustomerResourceTest {
     @Test
     public void shouldFoundCustomer() throws Exception {
         Long id = 1L;
-        Customer customer = createCustomer();
+        Customer customer = CustomerData.createCustomer();
 
          BDDMockito.given(service.findById(id)).willReturn(Optional.of(customer));
 
@@ -72,7 +72,7 @@ public class CustomerResourceTest {
 
     @Test
     public void shouldReturnListCostumers() throws Exception {
-        Customer customer = createCustomer();
+        Customer customer = CustomerData.createCustomer();
 
         BDDMockito.given( service.find(Mockito.any(Customer.class),Mockito.any(Pageable.class)))
            .willReturn(new PageImpl<Customer>(Arrays.asList(customer), PageRequest.of(0, 100), 1));
@@ -92,11 +92,5 @@ public class CustomerResourceTest {
             .andExpect( MockMvcResultMatchers.jsonPath("pageable.pageNumber").value(0));
     }
 
-    private Customer createCustomer(){
-        return Customer.builder().id(1L).name("Andre").email("andre@email.com").build();
-    }
 
-    private CustomerDTO createCustomerDTO(){
-        return CustomerDTO.builder().id(1L).name("Andre").email("andre@email.com").build();
-    }
 }

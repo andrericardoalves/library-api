@@ -1,5 +1,6 @@
 package com.alves.libraryApi.repository;
 
+import com.alves.libraryApi.data.CustomerData;
 import com.alves.libraryApi.model.Customer;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -31,7 +32,7 @@ public class CustomerRepositoryTest {
     @Test
     @Transactional()
     public void shouldFoundCostumerById(){
-        Customer customer = createCustomer();
+        Customer customer = CustomerData.createCustomer();
         testEntityManager.persist(customer);
 
         Optional<Customer> foundCustomer = repository.findById(1L);
@@ -39,7 +40,5 @@ public class CustomerRepositoryTest {
         MatcherAssert.assertThat(foundCustomer.isPresent(), Matchers.is(true));
     }
 
-    private Customer createCustomer(){
-        return Customer.builder().name("Andre").email("andre@email.com").build();
-    }
+
 }

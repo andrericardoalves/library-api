@@ -1,9 +1,6 @@
 package com.alves.libraryApi.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,12 +10,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Loan {
 
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
     @Column
     private LocalDate loanDate;
@@ -26,7 +25,8 @@ public class Loan {
     private Boolean returned;
     @OneToOne
     private Customer customer;
-    @OneToMany(mappedBy = "loan")
-    private List<Book> listBook;
+
+    @OneToMany(cascade = { CascadeType.PERSIST })
+    private List<Book> books;
 }
 
