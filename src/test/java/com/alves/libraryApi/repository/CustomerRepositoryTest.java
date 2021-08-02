@@ -7,20 +7,16 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
+@DataJpaTest
 @ActiveProfiles("test")
-@SpringBootTest
-@AutoConfigureTestEntityManager
-//@DataJdbcTest
 public class CustomerRepositoryTest {
 
     @Autowired
@@ -30,12 +26,11 @@ public class CustomerRepositoryTest {
     TestEntityManager testEntityManager;
 
     @Test
-    @Transactional()
     public void shouldFoundCostumerById(){
         Customer customer = CustomerData.createCustomer();
         testEntityManager.persist(customer);
 
-        Optional<Customer> foundCustomer = repository.findById(1L);
+        Optional<Customer> foundCustomer = repository.findById(customer.getId());
 
         MatcherAssert.assertThat(foundCustomer.isPresent(), Matchers.is(true));
     }

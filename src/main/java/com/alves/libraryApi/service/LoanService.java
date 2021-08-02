@@ -1,11 +1,16 @@
 package com.alves.libraryApi.service;
 
+import com.alves.libraryApi.dto.LoanFilterDTO;
 import com.alves.libraryApi.exception.BusinessException;
 import com.alves.libraryApi.model.Loan;
 import com.alves.libraryApi.repository.LoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +32,18 @@ public class LoanService {
         }
 
         return repository.save(loan);
+    }
+
+    public Optional<Loan> getById(Long id) {
+        return repository.findById(id);
+    }
+
+    public Loan update(Loan loan) {
+        return repository.save(loan);
+    }
+
+    public Page<Loan> findLoanByFilters(LoanFilterDTO loanFilterDTO, Pageable pageable) {
+        return repository.findLoanByFilters(loanFilterDTO.getAuthor(), loanFilterDTO.getTitle(), pageable);
     }
 }
 

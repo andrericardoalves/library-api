@@ -2,9 +2,11 @@ package com.alves.libraryApi.resource;
 
 import com.alves.libraryApi.data.BookData;
 import com.alves.libraryApi.dto.BookDTO;
+import com.alves.libraryApi.dto.ReturnedLoanDTO;
 import com.alves.libraryApi.exception.BusinessException;
 import com.alves.libraryApi.model.Book;
 import com.alves.libraryApi.service.BookService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;

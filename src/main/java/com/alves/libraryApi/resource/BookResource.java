@@ -1,7 +1,9 @@
 package com.alves.libraryApi.resource;
 
 import com.alves.libraryApi.dto.BookDTO;
+import com.alves.libraryApi.dto.LoanFilterDTO;
 import com.alves.libraryApi.model.Book;
+import com.alves.libraryApi.model.Loan;
 import com.alves.libraryApi.service.BookService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +79,6 @@ public class BookResource {
                .collect(Collectors.toList());
        return new PageImpl<BookDTO>(list, pageable, result.getTotalElements());
    }
+
 
 }

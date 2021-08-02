@@ -2,6 +2,8 @@ package com.alves.libraryApi.repository;
 
 import com.alves.libraryApi.model.Book;
 import com.alves.libraryApi.model.Loan;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -32,4 +34,12 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
     @Query("select distinct l.books from Loan l join l.books b ")
     List<Book> searchBooksLoaned();
 
+    @Query(" select l " +
+            " from Loan l " +
+            " join l.books b " +
+            " join l.customer c " +
+            " where 1 = 1 " +
+            " and ( b.author = :author or b.title = :title ) " +
+            " ")
+    Page<Loan> findLoanByFilters( @Param("author") String author, @Param("title") String title, Pageable pageable);
 }

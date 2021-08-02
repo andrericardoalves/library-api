@@ -18,7 +18,7 @@ public class LoanDTO {
     @NotEmpty
     private Long idCustomer;
     @NotEmpty
-    private List<Long> idBooks ;
+    private List<BookDTO> booksDTO ;
 }
 
 

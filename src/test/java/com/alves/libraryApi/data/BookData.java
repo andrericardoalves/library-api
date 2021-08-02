@@ -17,6 +17,11 @@ public class BookData {
         return Book.builder().id(1L).author("Andre").title("Programming for All").isbn("0001").build();
     }
 
+    public static Book createNewBookWithIdTwo() {
+        return Book.builder()
+                .id(2L).author("Andre").title("I love programing").isbn("0002").build();
+    }
+
     public static Book createNewBook(String isbn) {
         return Book.builder().author("Andre").title("Programming for All").isbn(isbn).build();
     }
@@ -24,5 +29,10 @@ public class BookData {
      public static BookDTO createNewBookDTO() {
         return BookDTO.builder()
                 .author("Andre").title("Programming for All").isbn("0001").build();
+    }
+
+    public static BookDTO createNewBookDTOWithId() {
+        return BookDTO.builder()
+                .id(1L).author("Andre").title("Programming for All").isbn("0001").build();
     }
 }

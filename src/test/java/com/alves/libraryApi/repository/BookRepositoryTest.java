@@ -7,9 +7,8 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -17,10 +16,8 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
+@DataJpaTest
 @ActiveProfiles("test")
-@SpringBootTest
-@AutoConfigureTestEntityManager
-//@DataJdbcTest
 public class BookRepositoryTest {
 
     @Autowired
@@ -30,7 +27,6 @@ public class BookRepositoryTest {
     TestEntityManager testEntityManager;
 
     @Test
-    @Transactional
     public void returnTrueWhenIsbnExists(){
         String isbn = "0001";
         Book book = BookData.createNewBook(isbn);
@@ -40,7 +36,6 @@ public class BookRepositoryTest {
     }
 
     @Test
-    @Transactional
     public void returnFalseWhenIsbnDoesntExists(){
         String isbn = "0001";
         boolean exists = repository.existsByIsbn(isbn);
@@ -48,7 +43,6 @@ public class BookRepositoryTest {
     }
 
     @Test
-    @Transactional()
     public void shouldFoundBookById(){
         Book book = BookData.createNewBook();
         testEntityManager.persist(book);
@@ -59,7 +53,6 @@ public class BookRepositoryTest {
     }
 
     @Test
-    @Transactional
     public void shouldBeSaveBook(){
         Book book = BookData.createNewBook("123");
 

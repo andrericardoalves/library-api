@@ -18,15 +18,16 @@ public class Loan {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
+    @ToString.Include
     private Long id;
     @Column
     private LocalDate loanDate;
     @Column
     private Boolean returned;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Customer customer;
 
-    @OneToMany(cascade = { CascadeType.PERSIST })
+    @OneToMany()
     private List<Book> books;
 }
 
