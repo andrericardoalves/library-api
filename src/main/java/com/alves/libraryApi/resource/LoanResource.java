@@ -9,6 +9,8 @@ import com.alves.libraryApi.model.Customer;
 import com.alves.libraryApi.model.Loan;
 import com.alves.libraryApi.service.BookService;
 import com.alves.libraryApi.service.LoanService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/loans")
+@Api("Loan API")
 public class LoanResource {
 
     @Autowired
@@ -37,6 +40,7 @@ public class LoanResource {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation("Create Loan")
     public Long create(@RequestBody LoanDTO dto) {
         List<Book> books =
                   dto.getBooksDTO()
@@ -58,13 +62,15 @@ public class LoanResource {
     }
 
     @PatchMapping("{id}")
-    public void returnBooks(@PathVariable Long id, @RequestBody ReturnedLoanDTO loanDTO){
+    @ApiOperation("Find Loan by id")
+    public void findLoanById(@PathVariable Long id, @RequestBody ReturnedLoanDTO loanDTO){
         Loan loan = service.getById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         loan.setReturned(loanDTO.getReturned());
         service.update(loan);
     }
 
     @GetMapping
+    @ApiOperation("Find Loan")
     public Page<LoanDTO> find(LoanFilterDTO loanFilterDTO, Pageable pageable){
         Page<Loan> loans = service.findLoanByFilters(loanFilterDTO, pageable);
         List<LoanDTO> loansDTO = loans

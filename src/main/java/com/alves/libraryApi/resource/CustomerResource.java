@@ -3,6 +3,8 @@ package com.alves.libraryApi.resource;
 import com.alves.libraryApi.dto.CustomerDTO;
 import com.alves.libraryApi.model.Customer;
 import com.alves.libraryApi.service.CustomerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/customers")
+@Api("API Customers")
 public class CustomerResource {
 
     @Autowired
@@ -31,6 +34,7 @@ public class CustomerResource {
 
 
     @GetMapping("{id}")
+    @ApiOperation("Find Customer by id")
     public CustomerDTO findById(@PathVariable Long id){
       return service.findById(id)
                .map( customer -> {
@@ -41,6 +45,7 @@ public class CustomerResource {
     }
 
     @GetMapping
+    @ApiOperation("Find Customers")
     public Page<CustomerDTO> find(CustomerDTO customerDTO, Pageable pageable){
         Customer customerFilter = modelMapper.map(customerDTO, Customer.class);
         Page<Customer> result = service.find(customerFilter, pageable);

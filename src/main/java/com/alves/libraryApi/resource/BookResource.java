@@ -3,6 +3,8 @@ package com.alves.libraryApi.resource;
 import com.alves.libraryApi.dto.BookDTO;
 import com.alves.libraryApi.model.Book;
 import com.alves.libraryApi.service.BookService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/books")
+@Api("API Book ")
 public class BookResource {
 
    @Autowired
@@ -32,6 +35,7 @@ public class BookResource {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation("Create Book")
     public BookDTO create(@RequestBody @Valid BookDTO bookDTO){
         Book bookEntity = modelMapper.map(bookDTO, Book.class);
         bookEntity = service.save(bookEntity);
@@ -39,6 +43,7 @@ public class BookResource {
     }
 
     @GetMapping("{id}")
+    @ApiOperation("Find book by id")
     public BookDTO get(@PathVariable Long id){
        return service.getById(id)
                .map( book -> modelMapper.map(book, BookDTO.class))
@@ -47,12 +52,14 @@ public class BookResource {
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation("Delete Book")
     public void delete(@PathVariable Long id ){
        service.getById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
        service.delete(id);
     }
 
     @PutMapping("{id}")
+    @ApiOperation("Update Book")
     public BookDTO update(@PathVariable Long id , @RequestBody @Valid BookDTO bookDTO){
        return service.getById(id)
                 .map( book -> {
@@ -67,6 +74,7 @@ public class BookResource {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Find Books")
     public Page<BookDTO> find(BookDTO bookDTO, Pageable pageable){
        Book bookFilter = modelMapper.map(bookDTO, Book.class);
        Page<Book> result = service.find(bookFilter, pageable);
