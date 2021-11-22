@@ -158,4 +158,34 @@ public class LoanServiceTest {
         MatcherAssert.assertThat(result.getPageable().getPageNumber(), Matchers.equalTo(0));
         MatcherAssert.assertThat(result.getPageable().getPageSize(), Matchers.equalTo(100));
     }
+
+    @Test
+    public void shouldReturnLateLoan(){
+        LocalDate fourDaysBefore = LocalDate.now().minusDays(3);
+        Loan loan = LoanData.createNewLoanWithId();
+        loan.setLoanDate(fourDaysBefore);
+        List<Loan> loanList = Arrays.asList(loan);
+
+        Mockito.when(repository.findByLoanDateLessThanAndNotReturned(fourDaysBefore)).thenReturn(loanList);
+
+        List<Loan> lateLoans =  service.findByLoanDateLessThanAndNotReturned(fourDaysBefore);
+
+        MatcherAssert.assertThat(lateLoans.size(), Matchers.equalTo(1));
+    }
+
+    @Test
+    public void shouldNotFoundLateLoan(){
+       LocalDate fourDaysBefore = LocalDate.now().minusDays(3);
+        Loan loan = LoanData.createNewLoanWithId();
+        loan.setLoanDate(fourDaysBefore);
+        loan.setReturned(true);
+        List<Loan> loanList = Arrays.asList(loan);
+
+      Mockito.when(repository.findByLoanDateLessThanAndNotReturned(fourDaysBefore))
+               .thenReturn(Arrays.asList());
+
+       List<Loan> lateLoans =  service.findByLoanDateLessThanAndNotReturned(fourDaysBefore);
+
+       MatcherAssert.assertThat(lateLoans.size(), Matchers.equalTo(0));
+    }
 }
