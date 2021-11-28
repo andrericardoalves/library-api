@@ -9,10 +9,7 @@ public class SimpleMailMessageBuilder{
 
     private SimpleMailMessage simpleMailMessage;
 
-
-
     public SimpleMailMessageBuilder(){}
-
 
     public static SimpleMailMessageBuilder builder(){
         SimpleMailMessageBuilder simpleMailMessageBuilder = new SimpleMailMessageBuilder();
