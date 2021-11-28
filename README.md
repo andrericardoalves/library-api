@@ -25,7 +25,13 @@
 1. Enter the project directory and run:
    ```mvn spring-boot:run```
 
+### Swagger  
+http://localhost:8080/swagger-ui.html
+
+### Actuator 
+The Spring Boot Actuator is a module built into Spring Boot that has a number of features that make it easy to manage and monitor applications.
+
+http://localhost:8080/actuator
+
+
 #### Comments
-Swagger - http://localhost:8080/swagger-ui.html
-
-

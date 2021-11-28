@@ -4,6 +4,7 @@ import com.alves.libraryApi.dto.EmailDTO;
 import com.alves.libraryApi.model.Loan;
 import com.alves.libraryApi.service.EmailService;
 import com.alves.libraryApi.service.LoanService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class ScheduleLateLoans {
 
     private static final String CRON_LATE_LOANS = "0 0 0 1/1 * ?";
@@ -38,6 +40,7 @@ public class ScheduleLateLoans {
                         .text(message)
                         .build();
         emailService.sendMails(email);
+        log.info("Scheduled email finished");
     }
 
     public List<String> listEmailsWithLateLoans( List<Loan> allLateLoans){
