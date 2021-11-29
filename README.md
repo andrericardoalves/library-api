@@ -19,8 +19,8 @@
   
 ### Running the unit tests
 1.Enter the project directory and run:
-   ```mvn test```
-
+   ```./mvnw test```
+    
 ### Running the project
 1. Enter the project directory and run:
    ```mvn spring-boot:run```
