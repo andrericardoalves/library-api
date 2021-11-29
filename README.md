@@ -33,5 +33,7 @@ The Spring Boot Actuator is a module built into Spring Boot that has a number of
 
 http://localhost:8080/actuator
 
+### JaCoCo - Java Code Coverage Library
+JaCoCo is a free Java code coverage library distributed under the Eclipse Public License. Check http://www.jacoco.org/jacoco for updates and feedback.
 
 #### Comments
