@@ -7,7 +7,6 @@ import com.alves.libraryApi.model.Customer;
 import com.alves.libraryApi.model.Loan;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,7 @@ public class LoanRepositoryTest {
     @Test
     public void shouldSaveLoan(){
         Loan loan = createPersistenceLoan();
-        List<Long> bookIds = loan.getBooks().stream().map(book -> book.getId()).collect(Collectors.toList());
+        List<Long> bookIds = loan.getBooks().stream().map(Book::getId).collect(Collectors.toList());
 
 
         Long quantity = repository.quantityBookAndNotReturnedById(bookIds.get(0));
@@ -58,6 +57,7 @@ public class LoanRepositoryTest {
 
     @Test
     public  void shouldExistByBookAndNotReturned(){
+
         createPersistenceLoan();
         boolean exist = repository.existByBookAndNotReturned(1L);
         MatcherAssert.assertThat(exist, Matchers.is(true));

@@ -8,13 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-
 import java.time.LocalDate;
 import java.util.List;
 
 public interface LoanRepository extends JpaRepository<Loan, Long> {
 
-    @Query(" select case when (count(b) > 0) then true else false end " +
+    @Query(" select case when (count(l.id) > 0) then true else false end " +
             " from Loan l " +
             " left join l.books b " +
             "  where 1 = 1 " +
