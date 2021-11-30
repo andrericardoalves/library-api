@@ -71,7 +71,7 @@ public class LoanRepositoryTest {
 
       Loan saveLoan = testEntityManager.persist(loan);
 
-        boolean exist = repository.existByBookAndNotReturned(saveLoan.getId());
+        boolean exist = repository.existByBookAndNotReturned(bookOne.getId());
         MatcherAssert.assertThat(exist, Matchers.is(true));
     }
 
