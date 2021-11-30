@@ -69,9 +69,9 @@ public class LoanRepositoryTest {
                 .loanDate(LocalDate.now())
                 .build();
 
-       testEntityManager.persist(loan);
+      Loan saveLoan = testEntityManager.persist(loan);
 
-        boolean exist = repository.existByBookAndNotReturned(1L);
+        boolean exist = repository.existByBookAndNotReturned(saveLoan.getId());
         MatcherAssert.assertThat(exist, Matchers.is(true));
     }
 
