@@ -58,7 +58,19 @@ public class LoanRepositoryTest {
     @Test
     public  void shouldExistByBookAndNotReturned(){
 
-        createPersistenceLoan();
+        Book bookOne = BookData.createNewBook();
+        testEntityManager.persist(bookOne);
+        Customer customer = CustomerData.createCustomer();
+        testEntityManager.persist(customer);
+
+        Loan loan = Loan.builder()
+                .books(List.of(bookOne)) // ,
+                .customer(customer)
+                .loanDate(LocalDate.now())
+                .build();
+
+       testEntityManager.persist(loan);
+
         boolean exist = repository.existByBookAndNotReturned(1L);
         MatcherAssert.assertThat(exist, Matchers.is(true));
     }
