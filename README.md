@@ -36,4 +36,12 @@ http://localhost:8080/actuator
 ### JaCoCo - Java Code Coverage Library
 JaCoCo is a free Java code coverage library distributed under the Eclipse Public License. Check http://www.jacoco.org/jacoco for updates and feedback.
 
+### Travis CI
+Travis CI is a hosted[2] continuous integration service used to build and test software projects hosted on GitHub and Bitbucket.
+
+###Codecov
+Codecov provides highly integrated tools for developers and engineering leaders to gain actionable visibility into their code coverage
+
+[![Build Status](https://app.travis-ci.com/andrericardoalves/library-api.svg?branch=main)](https://app.travis-ci.com/andrericardoalves/library-api)
+
 #### Comments
