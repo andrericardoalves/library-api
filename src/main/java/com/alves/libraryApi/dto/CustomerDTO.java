@@ -18,4 +18,6 @@ public class CustomerDTO {
     private String name;
     @NotEmpty
     private String email;
+    private String surName;
+
 }

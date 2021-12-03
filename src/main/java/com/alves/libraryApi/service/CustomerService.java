@@ -32,4 +32,39 @@ public class CustomerService {
 
         return repository.findAll(example, pageable);
     }
+
+    public Customer save(Customer customer) throws Exception {
+
+        Optional<Customer> customerSaved = findByEmail(customer.getEmail());
+
+        if(customerSaved.isPresent()){
+            throw new Exception("Already customer with email: " + customer.getEmail() );
+        }
+
+        return repository.save(customer);
+    }
+
+    public Optional<Customer> findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
+
+    public Customer update(Customer customer) throws Exception {
+        Optional<Customer> customerSaved = findById(customer.getId());
+
+        if(!customerSaved.isPresent()){
+            throw new Exception("Customer no found: " + customer.getId());
+        }
+       return repository.save(customer);
+    }
+
+    public void deleteById(Long id) throws Exception {
+
+        Optional<Customer> customerSaved = findById(id);
+
+        if(!customerSaved.isPresent()){
+            throw new Exception("Customer not found: " + id);
+        }
+
+        repository.deleteById(id);
+    }
 }

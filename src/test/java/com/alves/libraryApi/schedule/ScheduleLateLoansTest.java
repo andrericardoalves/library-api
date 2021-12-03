@@ -10,9 +10,13 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.scheduling.support.CronExpression;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,4 +41,19 @@ public class ScheduleLateLoansTest {
 
         Assertions.assertEquals(2, listEmails.size());
     }
+
+    @Test
+    public void shouldCallScheduleAtMidnightNext5DaysInARow(){
+        String CRON_EXP = "0 0 0 1/1 * ?";
+        CronExpression cronGen =  CronExpression.parse(CRON_EXP);
+        LocalDateTime oneDayAtMidnightCron = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0));
+        LocalDateTime oneDayAtMidnight = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0));
+
+        for (int i = 1; i < 5; i++) {
+            oneDayAtMidnightCron = cronGen.next(oneDayAtMidnightCron);
+            oneDayAtMidnight = oneDayAtMidnight.plusDays(1);
+            Assertions.assertEquals(oneDayAtMidnightCron , oneDayAtMidnight);
+        }
+    }
+
 }

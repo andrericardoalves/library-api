@@ -11,10 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -32,6 +29,27 @@ public class CustomerResource {
 
     public CustomerResource(){ modelMapper = new ModelMapper();}
 
+    @PostMapping
+    @ApiOperation("Save a Customer")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Customer save(@RequestBody Customer customer) throws Exception {
+        return service.save(customer);
+    }
+
+    @PutMapping
+    @ApiOperation("Update a Customer")
+    @ResponseStatus(HttpStatus.OK)
+    public Customer update(@RequestBody Customer customer) throws Exception {
+       return service.update(customer);
+    }
+
+    @GetMapping(value = "/findByEmail")
+    @ApiOperation("Find Customer by email")
+    public CustomerDTO findByEmail(@RequestParam("email") String email){
+        return service.findByEmail(email)
+                .map( customer -> modelMapper.map(customer, CustomerDTO.class))
+        .orElseThrow(() -> new  ResponseStatusException((HttpStatus.NOT_FOUND) ));
+    }
 
     @GetMapping("{id}")
     @ApiOperation("Find Customer by id")

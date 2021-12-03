@@ -3,6 +3,7 @@ package com.alves.libraryApi.resource;
 import com.alves.libraryApi.data.CustomerData;
 import com.alves.libraryApi.model.Customer;
 import com.alves.libraryApi.service.CustomerService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +42,85 @@ public class CustomerResourceTest {
     CustomerService service;
 
     @Test
-    public void shouldFoundCustomer() throws Exception {
+    public void shouldSaveCustomer() throws Exception {
+        Customer customer = Customer.builder()
+                .id(1L).name("John").surName("White").email("johnwhite@gmail.com").build();
+        String json = new ObjectMapper().writeValueAsString(customer);
+
+        BDDMockito.given(service.save(Mockito.any(Customer.class))).willReturn(customer);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post(CUSTOMERS_API)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(customer.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("surName").value(customer.getSurName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("email").value(customer.getEmail()));
+    }
+
+    @Test
+    public void shouldUpdateCustomer() throws Exception {
+        Customer customer = Customer.builder()
+                .id(1L).name("John").surName("White").email("johnwhite@gmail.com").build();
+        String json = new ObjectMapper().writeValueAsString(customer);
+
+        BDDMockito.given(service.update(Mockito.any(Customer.class))).willReturn(customer);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .put(CUSTOMERS_API)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(customer.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("name").value(customer.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("surName").value(customer.getSurName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("email").value(customer.getEmail()));
+    }
+
+
+    @Test
+    public void shouldFoundCustomerByEmail() throws Exception {
+        String email = "johnwhite@gmail.com";
+        Customer customer = CustomerData.createCustomer();
+
+        BDDMockito.given(service.findByEmail(email)).willReturn(Optional.of(customer));
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get(CUSTOMERS_API.concat("/findByEmail"))
+                .param("email", email)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mvc.perform(request)
+                .andExpect( MockMvcResultMatchers.status().isOk() )
+                .andExpect( MockMvcResultMatchers.jsonPath("id").value(customer.getId()) )
+                .andExpect( MockMvcResultMatchers.jsonPath("name").value(customer.getName()) )
+                .andExpect( MockMvcResultMatchers.jsonPath("email").value(customer.getEmail()) );
+    }
+
+    @Test
+    public void findByEmailCustomerNotFound() throws Exception {
+        String email = "johnwhite@gmail.com";
+
+        BDDMockito.given(service.findByEmail(email)).willReturn(Optional.empty());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get(CUSTOMERS_API.concat("/findByEmail"))
+                .param("email", email)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    public void findByIdCustomerNotFound() throws Exception {
         Long id = 1L;
         Customer customer = CustomerData.createCustomer();
 
